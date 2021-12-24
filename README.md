@@ -1,4 +1,5 @@
 # PATHS
+Make sure you use the path and name mentioned in the Location rather than the name used here on github since github apparently ignores files with a dot in front of them
 | **File** | **Location** |
 | ------------------ | ------------ |
 | alacritty.yml | ~/.config/alacritty/alacritty.yml |
