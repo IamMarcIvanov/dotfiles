@@ -12,3 +12,9 @@
 | .bashrc | ~/.bashrc |
 | gruvbox.vim | ~/.vim/colors/gruvbox.vim |
 | tex.snippets | ~/.vim/Ultisnips/tex.snippets |
+| quickmarks | ~/.config/qutebrowser/quickmarks |
+| .rtorrent.rc | ~/.rtorrent.rc |
+| battery\_percent\_script.sh | ~/scripts/battery\_percent\_script.sh | 
+| cpu\_temp\_script.sh | ~/scripts/cpu\_temp\_script.sh | 
+| cpu\_util\_script.awk | ~/scripts/cpu\_util\_script.awk |
+| gpu\_properties\_script.sh | ~/scripts/gpu\_properties\_script.sh |

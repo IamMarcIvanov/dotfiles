@@ -116,10 +116,10 @@ set $ws3 "3: Vifm"
 set $ws4 "4: Vim"
 set $ws5 "5: PDFs"
 set $ws6 "6: MiscTerm"
-set $ws7 "7"
-set $ws8 "8"
+set $ws7 "7: mpv"
+set $ws8 "8: Env"
 set $ws9 "9"
-set $ws10 "10"
+set $ws10 "10: Sound"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -149,8 +149,9 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Ctrl+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -191,7 +192,7 @@ bindsym $mod+Shift+x exec i3lock --image=/media/yggdrasil/LibraryOfBabel/Images/
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # Set Wallpaper
-exec_always feh --bg-fill /media/yggdrasil/LibraryOfBabel/Images/Wallpaper/SciFi_Elevator.jpg
+exec_always feh --bg-fill /media/yggdrasil/LibraryOfBabel/Images/Wallpaper/the_lost_city.jpg
 
 # Remove border to allow for gaps
 for_window [class=".*"] border pixel 0
@@ -202,3 +203,9 @@ gaps inner 15
 # specific workspaces for specific applications
 for_window [class="qutebrowser"] move container to workspace $ws2
 for_window [class="mpv"] move container to workspace $ws7
+
+# exit i3 using a mouse
+bindsym $mod+Shift+e exec i3-msg exit
+
+# to move between successive workspaces
+bindsym $mod+Tab workspace back_and_forth

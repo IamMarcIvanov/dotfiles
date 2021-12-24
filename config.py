@@ -508,3 +508,10 @@ config.bind('<Ctrl-y>', 'hint links spawn --detach mpv {hint-url}')
 
 # to increase the statusbar font size
 c.fonts.default_size = "12pt"
+
+# adblocking
+# config.set('content.cookies.accept', 'no-3rdparty', 'chrome-devtools://*')
+config.set('content.blocking.method', 'both')
+
+# set qutebrowser to use tor
+# c.content.proxy = 'socks://localhost:9050/'
