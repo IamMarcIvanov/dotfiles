@@ -8,12 +8,12 @@
 | config.py | ~/.config/qutebrowser/config.py |
 | gruvbox.vifm | ~/.config/vifm/colors/gruvbox.vifm |
 | vifmrc | ~/.config/vifm/vifmrc |
-| .vimrc | ~/.vimrc |
-| .bashrc | ~/.bashrc |
+| vimrc | ~/.vimrc |
+| bashrc | ~/.bashrc |
 | gruvbox.vim | ~/.vim/colors/gruvbox.vim |
 | tex.snippets | ~/.vim/Ultisnips/tex.snippets |
 | quickmarks | ~/.config/qutebrowser/quickmarks |
-| .rtorrent.rc | ~/.rtorrent.rc |
+| rtorrent.rc | ~/.rtorrent.rc |
 | battery\_percent\_script.sh | ~/scripts/battery\_percent\_script.sh | 
 | cpu\_temp\_script.sh | ~/scripts/cpu\_temp\_script.sh | 
 | cpu\_util\_script.awk | ~/scripts/cpu\_util\_script.awk |
