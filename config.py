@@ -515,3 +515,9 @@ config.set('content.blocking.method', 'both')
 
 # set qutebrowser to use tor
 # c.content.proxy = 'socks://localhost:9050/'
+
+# to set what characters show up when using hinting
+config.set('hints.chars', 'qwertyuiopadsfghjklzxcvbnm')
+
+# to set site specific quirks to true to allow google sign in
+config.set('content.site_specific_quirks.enabled', True)

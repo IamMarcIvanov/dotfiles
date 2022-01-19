@@ -57,12 +57,13 @@ height = 27
 radius = 6.0
 bottom = true
 fixed-center = false
-background = ${colors.bg}
+background = #00000000
+;${colors.bg}
 foreground = ${colors.fg}
 line-size = 4
-line-color = #f00
+line-color = #00000000
 border-size = 4
-border-color = #000000
+border-color = #00000000
 padding-left = 0
 padding-right = 2
 module-margin-left = 1
@@ -72,7 +73,7 @@ font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 ; modules-left = i3
 ; modules-center = mpd
-modules-right = filesystem pulseaudio memory cpu wlan eth battery gpu_properties date
+modules-right = locks filesystem pulseaudio memory cpu wlan eth battery gpu_properties date
 tray-position = none
 tray-padding = 2
 ; tray-background = #0063ff
@@ -85,6 +86,7 @@ tray-padding = 2
 ;scroll-down = i3wm-wsprev
 cursor-click = pointer
 cursor-scroll = ns-resize
+enable-ipc = true
 
 [module/i3]
 type = internal/i3
@@ -115,6 +117,14 @@ label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
 ; Separator in between workspaces
 ; label-separator = |
+
+[module/locks]
+type = custom/script
+interval = 10
+exec = source /home/danish/scripts/lock_key_status_script.sh
+format-padding = 2
+format-underline = ${colors.purple2}
+format-background = ${colors.bg3}
 
 [module/filesystem]
 type = internal/fs
@@ -168,7 +178,7 @@ label = RAM %percentage_used%%  %gb_used% / %gb_free%
 [module/cpu]
 type = custom/script
 interval = 2
-exec = echo -n 'CPU: ' ; echo -n $(ps -eo %C | awk -f /media/yggdrasil/LibraryOfBabel/Miscellany/Danish/linux_temp/cpu_util_script.awk) ; echo -n ' ' ; source /media/yggdrasil/LibraryOfBabel/Miscellany/Danish/linux_temp/cpu_temp_script.sh
+exec = echo -n 'CPU: ' ; echo -n $(ps -eo %C | awk -f ~/scripts/cpu_util_script.awk) ; echo -n ' ' ; source ~/scripts/cpu_temp_script.sh
 format-underline = ${colors.red1}
 format-background = ${colors.bg3}
 format-padding = 2
@@ -212,7 +222,7 @@ format-disconnected =
 
 [module/battery]
 type = custom/script
-exec = source /media/yggdrasil/LibraryOfBabel/Miscellany/Danish/linux_temp/battery_percent_script.sh
+exec = source ~/scripts/battery_percent_script.sh
 interval = 10
 format-underline = ${colors.yellow1}
 format-padding = 2
@@ -220,7 +230,7 @@ format-background = ${colors.bg3}
 
 [module/gpu_properties]
 type = custom/script
-exec = source /media/yggdrasil/LibraryOfBabel/Miscellany/Danish/linux_temp/gpu_properties_script.sh
+exec = source ~/scripts/gpu_properties_script.sh
 interval = 10
 format-prefix = "GPU Temp: "
 format-underline = ${colors.green1}
@@ -271,6 +281,7 @@ tray-position = right
 tray-padding = 2
 cursor-click = pointer
 cursor-scroll = ns-resize
+enable-ipc = true
 
 ; vim:ft=dosini
 ; ================ unused modules =====================

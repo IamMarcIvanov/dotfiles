@@ -19,3 +19,9 @@ alias attn='paplay $BEEP1'
 
 export BEEP2=/usr/share/sounds/freedesktop/stereo/complete.oga
 alias full='paplay $BEEP2'
+
+# swap capslock and escape keys
+setxkbmap -option caps:swapescape
+
+# set fzf default search program
+export FZF_DEFAULT_COMMAND='rg --files --hidden'

@@ -48,7 +48,9 @@ set wildmenu
 " ---------------------------------------------------
 "  KeyMaps
 " ---------------------------------------------------
-imap ;; <Esc>
+" imap ;; <Esc>
+" we use capslock for escape by doing 
+" setxkbmap -option caps:swapescape
 
 " --------------------------------------------------
 "  Plugins
@@ -72,4 +74,13 @@ call plug#begin('~/.vim/plugged')
         " Viewer options: One may configure the viewer either by specifying
         " a built-in viewer method:
         let g:vimtex_view_method = 'zathura'
+
+    " This is a fuzzy finder - I have installed ripgrep and this is set to use
+    " that
+    Plug 'junegunn/fzf'
+    Plug 'junegunn/fzf.vim'
+    " tell fzf to ignore files in gitignore
+    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+
+    Plug 'vifm/vifm.vim'
 call plug#end()

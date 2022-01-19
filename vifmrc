@@ -110,20 +110,22 @@ set statusline="  Permissions:%A   Size:%s   LastMod:%d"
 " ------------------------------------------------------------------------------
 
 " :mark mark /full/directory/path [filename]
-mark y /media/yggdrasil/LibraryOfBabel/BITS/Yr\ 4\ Sem\ 1/
-mark l /media/yggdrasil LibraryOfBabel
-mark t /media/yggdrasil/LibraryOfBabel/Valhalla/Planning/Tasks tasks.pdf
-mark r /media/yggdrasil/LibraryOfBabel/Valhalla/Rough rough.pdf
-mark v /home/danish/.config/vifm vifmrc
-mark z /media/yggdrasil/Svalbard/Zoetrope
-mark p /media/yggdrasil/LibraryOfBabel/Projects
-mark e /media/yggdrasil/LibraryOfBabel/Environments
 mark a /media/yggdrasil/LibraryOfBabel/HeimdallrsHljod/Academia/AGI
+mark d /media/yggdrasil/LibraryOfBabel/Valhalla/ linux_downloads
+mark e /media/yggdrasil/LibraryOfBabel/Environments
 mark g /media/yggdrasil/LibraryOfBabel/Valhalla/GeneralProjects/
-mark x /media/yggdrasil/BoxOfPandora/Executables
-mark i /media/yggdrasil/BoxOfPandora/Installations
-mark m /media/yggdrasil/LibraryOfBabel/Miscellany/Danish linux_temp
 mark h /home/danish .config
+mark i /media/yggdrasil/BoxOfPandora/Installations
+mark l /media/yggdrasil LibraryOfBabel
+mark m /media/yggdrasil/LibraryOfBabel/Miscellany/Danish linux_temp
+mark p /media/yggdrasil/LibraryOfBabel/Projects
+mark r /media/yggdrasil/LibraryOfBabel/Valhalla/Rough rough.pdf
+mark t /media/yggdrasil/LibraryOfBabel/Valhalla/Planning/Tasks tasks.pdf
+mark v /home/danish/.config/vifm vifmrc
+mark w /media/yggdrasil/LibraryOfBabel/Images/ Wallpaper
+mark x /media/yggdrasil/BoxOfPandora/Executables
+mark y /media/yggdrasil/LibraryOfBabel/BITS/Yr\ 4\ Sem\ 2/
+mark z /media/yggdrasil/Svalbard/Zoetrope
 
 " ------------------------------------------------------------------------------
 
@@ -357,6 +359,11 @@ filetype *.tudu tudu -f %c
 " Qt projects
 filextype *.pro qtcreator %f &
 
+" Epub 
+filextype *.epub
+        \ {View in zathura}
+        \ zathura %f,
+
 " Directories
 filextype */
         \ {View in thunar}
@@ -433,6 +440,10 @@ nnoremap O :!vim %f<cr>
 
 " Open file in the background using its default program
 nnoremap gb :file &<cr>l
+
+" increase size of pane by 5 points
+nnoremap > <C-w>5+
+nnoremap < <C-w>5-
 
 " Interaction with system clipboard
 if has('win')

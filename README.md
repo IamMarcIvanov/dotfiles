@@ -13,9 +13,16 @@ Make sure you use the path and name mentioned in the Location rather than the na
 | bashrc | ~/.bashrc |
 | gruvbox.vim | ~/.vim/colors/gruvbox.vim |
 | tex.snippets | ~/.vim/Ultisnips/tex.snippets |
+| python.snippets | ~/.vim/Ultisnips/python.snippets |
+| cpp.snippets | ~/.vim/Ultisnips/cpp.snippets |
 | quickmarks | ~/.config/qutebrowser/quickmarks |
 | rtorrent.rc | ~/.rtorrent.rc |
 | battery\_percent\_script.sh | ~/scripts/battery\_percent\_script.sh | 
 | cpu\_temp\_script.sh | ~/scripts/cpu\_temp\_script.sh | 
 | cpu\_util\_script.awk | ~/scripts/cpu\_util\_script.awk |
 | gpu\_properties\_script.sh | ~/scripts/gpu\_properties\_script.sh |
+| caps\_escape\_swap.sh | ~/scripts/caps\_escape\_swap.sh |
+| lock\_key\_status\_script.sh | ~/scripts/lock\_key\_status\_script.sh |
+| password\_manager.sh | ~/scripts/password\_manager.sh |
+| rclone.conf | ~/.config/rclone/rclone.conf |
+| picom.conf | ~/.config/picom/picom.conf |

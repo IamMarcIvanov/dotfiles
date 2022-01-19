@@ -118,8 +118,8 @@ set $ws5 "5: PDFs"
 set $ws6 "6: MiscTerm"
 set $ws7 "7: mpv"
 set $ws8 "8: Env"
-set $ws9 "9"
-set $ws10 "10: Sound"
+set $ws9 "9: Torrent"
+set $ws10 "10: Whatsapp"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -191,8 +191,11 @@ bindsym $mod+Shift+x exec i3lock --image=/media/yggdrasil/LibraryOfBabel/Images/
 # polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
+# toggle hidden and visible states of polybar bars
+bindsym $mod+t exec polybar-msg cmd toggle
+
 # Set Wallpaper
-exec_always feh --bg-fill /media/yggdrasil/LibraryOfBabel/Images/Wallpaper/the_lost_city.jpg
+exec_always feh --bg-fill /media/yggdrasil/LibraryOfBabel/Images/Wallpaper/warrior.jpg
 
 # Remove border to allow for gaps
 for_window [class=".*"] border pixel 0
@@ -204,8 +207,15 @@ gaps inner 15
 for_window [class="qutebrowser"] move container to workspace $ws2
 for_window [class="mpv"] move container to workspace $ws7
 
-# exit i3 using a mouse
+# exit i3 without using a mouse
 bindsym $mod+Shift+e exec i3-msg exit
 
 # to move between successive workspaces
 bindsym $mod+Tab workspace back_and_forth
+
+# to cycle through workspaces
+bindsym $mod+n workspace next
+bindsym $mod+p workspace prev
+
+# picom
+exec_always --no-startup-id picom -b --config /home/danish/.config/picom/picom.conf --experimental-backends

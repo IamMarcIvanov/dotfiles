@@ -1,0 +1,42 @@
+snippet :sync "remove syncing with stdio -- makes code faster"
+std::ios_base::sync_with_stdio(false);
+std::cin.tie(NULL);
+std::cout.tie(NULL);
+endsnippet
+
+snippet :o "output" i
+std::cout << $0
+endsnippet
+
+snippet :i "input" i
+std::cin >> $0
+endsnippet
+
+snippet :br "newline" i
+<< '\n';
+endsnippet
+
+snippet :start "for competitions" i
+#include<bits/stdc++.h>
+using namespace std;
+
+void solve1()
+{
+	$1
+}
+
+int main()
+{
+	int t;
+	std::cin >> t;
+	while(t--) solve1();
+	return 0;
+}
+endsnippet
+
+snippet :for "for loop"
+for (int i=$1 ; i<$2 ; i++)
+{
+	$3
+}
+endsnippet
