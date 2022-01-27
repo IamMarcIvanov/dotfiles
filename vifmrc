@@ -110,22 +110,22 @@ set statusline="  Permissions:%A   Size:%s   LastMod:%d"
 " ------------------------------------------------------------------------------
 
 " :mark mark /full/directory/path [filename]
-mark a /media/yggdrasil/LibraryOfBabel/HeimdallrsHljod/Academia/AGI
-mark d /media/yggdrasil/LibraryOfBabel/Valhalla/ linux_downloads
-mark e /media/yggdrasil/LibraryOfBabel/Environments
-mark g /media/yggdrasil/LibraryOfBabel/Valhalla/GeneralProjects/
+mark a /mnt/windows_d/LibraryOfBabel/HeimdallrsHljod/Academia/AGI
+mark d /mnt/windows_d/LibraryOfBabel/Valhalla/ linux_downloads
+mark e /mnt/windows_d/LibraryOfBabel/Environments
+mark g /mnt/windows_d/LibraryOfBabel/Valhalla/GeneralProjects/
 mark h /home/danish .config
-mark i /media/yggdrasil/BoxOfPandora/Installations
-mark l /media/yggdrasil LibraryOfBabel
-mark m /media/yggdrasil/LibraryOfBabel/Miscellany/Danish linux_temp
-mark p /media/yggdrasil/LibraryOfBabel/Projects
-mark r /media/yggdrasil/LibraryOfBabel/Valhalla/Rough rough.pdf
-mark t /media/yggdrasil/LibraryOfBabel/Valhalla/Planning/Tasks tasks.pdf
+mark i /mnt/windows_d/BoxOfPandora/Installations
+mark l /mnt/windows_d LibraryOfBabel
+mark m /mnt/windows_d/LibraryOfBabel/Miscellany/Danish linux_temp
+mark p /mnt/windows_d/LibraryOfBabel/Projects
+mark r /mnt/windows_d/LibraryOfBabel/Valhalla/Rough rough.pdf
+mark t /mnt/windows_d/LibraryOfBabel/Valhalla/Planning/Tasks tasks.pdf
 mark v /home/danish/.config/vifm vifmrc
-mark w /media/yggdrasil/LibraryOfBabel/Images/ Wallpaper
-mark x /media/yggdrasil/BoxOfPandora/Executables
-mark y /media/yggdrasil/LibraryOfBabel/BITS/Yr\ 4\ Sem\ 2/
-mark z /media/yggdrasil/Svalbard/Zoetrope
+mark w /mnt/windows_d/LibraryOfBabel/Images/ Wallpaper
+mark x /mnt/windows_d/BoxOfPandora/Executables
+mark y /mnt/windows_d/LibraryOfBabel/BITS/Yr\ 4\ Sem\ 2/
+mark z /mnt/windows_d/Svalbard/Zoetrope
 
 " ------------------------------------------------------------------------------
 

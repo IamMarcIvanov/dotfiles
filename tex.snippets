@@ -56,10 +56,6 @@ snippet :gm "gamma" i
 \gamma
 endsnippet
 
-snippet :ta "theta" i
-\theta
-endsnippet
-
 snippet _ "for maths" i
 _{$1}$0
 endsnippet
@@ -69,10 +65,6 @@ endsnippet
 
 snippet :sl "sum limits" i
 \sum\limits_{$1}^{$2}$0
-endsnippet
-
-snippet :pl "product limits" i
-\prod\limits_{$1}^{$2}$0
 endsnippet
 
 snippet :bbP "double line P for probability" i
@@ -239,23 +231,6 @@ snippet :geo "change geometry of page" i
 \usepackage[left = 1cm, right = 1cm, bottom = 2cm, top = 2cm]{geometry}$0
 endsnippet
 
-snippet :href "hyperref" i
-% to add coloured links
-\usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}$0
-endsnippet
-
-snippet :xc "xcolor" i
-% to be able to use colour
-\usepackage[dvipsnames]{xcolor}$0
-endsnippet
-
-snippet :nosep "make it so that there is no separation in lists" i
-% to have no space in all lists
-\usepackage{enumitem}
-\setlist[enumerate]{nosep}
-\setlist[itemize]{noitemsep}
-endsnippet
-
 snippet :enum "enumeration environment" i
 \begin{enumerate}
 	\item $1
@@ -264,7 +239,7 @@ snippet :enum "enumeration environment" i
 \end{enumerate}$0
 endsnippet
 
-snippet :begin "create environment" i
+snippet begin "create environment" i
 \begin{$1}
 	$2
 \end{$1}$0
@@ -286,106 +261,120 @@ snippet :poem "poem" i
 \end{verse}$0
 endsnippet
 
+snippet :vocab "vocabulary practice template" i
+\begin{frame}
+	\frametitle{$1}
+	\begin{columns}
+		\column{0.5\textwidth}
+			\pause
+			\textbf{Meaning:} $2 \\\ \pause
+			\textbf{Sample Sentences:} 
+				\begin{itemize}
+					\item $3 \pause
+				\end{itemize}
+			\textbf{Usage:} $4 \\\ \pause
+			\textbf{Connotation:} $5 \\\ \pause
+
+		\column{0.5\textwidth}
+		\begin{figure}
+			\includegraphics[width=$6\textwidth, height=$7\textheight]{$8}
+			\caption{$9}
+		\end{figure}
+	\end{columns}
+\end{frame}$0
+endsnippet
+
 snippet :tt "timetable" i
 \begin{minipage}{20cm}% ===================================== $1 =====================================
 \textcolor{Magenta}{\Large{\textbf{$1}}}
 
-\begin{tabular}{| r | c | c |}
+\begin{tabular}{| r | c |}
 	\hline
-	\textbf{Everyday Tasks} & \textbf{Time Needed} & \textbf{Status} \\\
+	\textbf{Everyday Tasks} & \textbf{Status} \\\
 \hline
 \hline
-	Brush in the morning & 00:05:00 & \xmark \\\
-	Brush at night & 00:05:00 & \xmark \\\
-	Bathe without taking phone inside & 00:10:00 & \xmark \\\
-	Bathe using the slinky loofah & - & \xmark \\\
-	Have a head bath & - & \xmark \\\
-	Put clothes for washing & 00:01:00 & \xmark \\\
-	Practice Flute (1) & 00:05:00 & \xmark \\\
-	Practice Flue (2) & 00:05:00 & \xmark \\\
-	Practice Flue (3) & 00:05:00 & \xmark \\\
-	Exercise & 00:15:00 & \xmark \\\
-	Update Exercise Manifest & 00:05:00 & \xmark \\\
-	Go out and talk with friends & 01:30:00 &  \xmark \\\
-	Get a filled bottle of water & 00:01:00 & \xmark \\\
-	Finish the bottle of water & - & \xmark \\\
-	Breakfast & 01:00:00 & \xmark \\\
-	Lunch & 01:00:00 & \xmark \\\
-	Dinner & 01:00:00 & \xmark \\\
-	Wash Many bowl & 00:05:00 & \xmark \\\
-	Replace Mandy Plate & 00:05:00 & \xmark \\\
-	Clean Mandy Litter & 00:05:00 & \xmark \\\
-	Play with Mandy & 00:15:00 & \xmark \\\
-	Take medication (Depranex Half) & 00:01:00 & \xmark \\\
-	Take medication (ModAlert Half) & 00:01:00 & \xmark \\\
-	Update Task list at end of day & 00:10:00 & \xmark \\\
-	Update Money Tracker & 00:10:00 & \xmark \\\
-	Check you mail (try to do it through mutt) & 00:05:00 & \xmark \\\
-	Call and talk with Nani & 00:10:00 & \xmark \\\
+	Brush in the morning & \xmark \\\
+	Brush at night & \xmark \\\
+	Bathe without taking phone inside & \xmark \\\
+	Bathe using the slinky loofah & \xmark \\\
+	Have a head bath & \xmark \\\
+	Practice Flute (1) & \xmark \\\
+	Practice Flue (2) &  \xmark \\\
+	Practice Flue (3) &  \xmark \\\
+	Exercise &  \xmark \\\
+	Stretch Back, Neck and Leg (1) & \xmark \\\
+	Stretch Back, Neck and Leg (2) &  \xmark \\\
+	Stretch Back, Neck and Leg (3) & \xmark \\\
+	Have Breakfast & \xmark \\\
+	Have Lunch & \xmark \\\
+	Have Dinner & \xmark \\\
+	Go out and talk with friends &  \xmark \\\
+	Get a filled bottle of water & \xmark \\\
+	Finish the bottle of water & \xmark \\\
+	Wash Many bowl & \xmark \\\
+	Replace Mandy Plate & \xmark \\\
+	Clean Mandy Litter & \xmark \\\
+	Play with Mandy & \xmark \\\
+	Take medication (Depranex Half) & \xmark \\\
+	Take medication (ModAlert Full) & \xmark \\\
+	Update Task list at end of day & \xmark \\\
+	Update Money Tracker & \xmark \\\
+	Check you mail through mutt & \xmark \\\
+	\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c |}
 \hline
-	\textbf{Total Time} & 06:34:00 & \\\
+	\textbf{Tasks for Today} & \textbf{Status} \\\
+\hline
+\hline
+	Give GRE Test & \xmark \\\
+	Play at night with Nani and Huma and Mom & \xmark \\\
+	Work on Nikumani Sir Project & \xmark \\\
+	Contact Nainika Pai and see what she is up to & \xmark \\\
+	Sync your PC & \xmark \\\
+	Sync Mother's PC & \xmark \\\
 \hline
 \end{tabular}
 
 \vspace{2em}
 \begin{tabular}{| r | c | c |}
-\hline
-	\textbf{Tasks for Today} & \textbf{Expected Time} & \textbf{Status} \\\
-\hline
-\hline
-	Work on Nikumani Sir Project & 02:00:00 & \xmark \\\
-	Work on Paresh Sir Project & 04:00:00 & \xmark \\\
-	Sync Mother's PC & 00:05:00 & \xmark \\\
-	Sync Your PC & 00:10:00 & \xmark \\\
-	Call and have a talk with Sayan & 00:30:00 & \xmark \\\
-	Call and have a talk with Karan & 00:30:00 & \xmark \\\
-	Work on VSCode Extension & 02:00:00 & \xmark \\\
-	Codeforces Questions & 01:00:00 & \xmark \\\
-\hline
-	\textbf{Total Time} & 14:20:00 & \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | r | c |}
 \hline
 	\textbf{Tasks for Later} & \textbf{Deadline} & \textbf{Status} \\\
 \hline
 \hline
-	Create a VS Code Extension -- a simple one & 15 January 2022 (Sunday) & \xmark \\\
-	Mandy take to Crown Vet for Blood Test & 22 January 2022 (Saturday) 10:40 AM & \xmark \\\
-	Call Dadi, Phupi, Mamujan, Didi, Khala Aunty & 23 January 2022 (Sunday) & \xmark \\\
+	Create a VS Code Extension -- a simple one & 21 November 2021 (Sunday) & \xmark \\\
 	Dev Rev -- VS Code extension creation & 31 March 2022 (Thursday) & \xmark \\\
+	Set up Neutering Appointment for Mandy & 3 December 2021 (Friday) & \xmark \\\
+	Send in Nikumani Sir Project Report & 24 November 2021 (Wednesday) & \xmark \\\
 \hline
 \end{tabular}
 
 \vspace{2em}
 \begin{tabular}{| r | c | c |}
 \hline
-	\textbf{Person} & \textbf{Event} & \textbf{Date} \\\
+	\textbf{Well Wishes} & \textbf{Date} & \textbf{Status} \\\
 \hline
 \hline
-	Badi Ammi & Marriage Anniversary & 8 January \\\
-	Darshan Kedari & Birthday & 1 February \\\
-	Faraz & Birthday & 3 February \\\
-	Aditya Singhal & Birthday & 4 February \\\
-	Sharanya Ranka & Birthday & 8 February \\\
-	Desai Kirti Ma'am & Birthday & 9 February \\\
-	Anuj Srivastava & Birthday & 2 April \\\
-	Abhinav Damor & Birthday & 4 May \\\
-	Sarvesh Shinde & Birthday & 6 July \\\
-	Neha Chemistry Teacher & Teachers day & 5 September \\\
-	Desai Kirti Ma'am & Teachers day & 5 September \\\
-	Atharv Kirtikar & Birthday & 17 September \\\
-	Siddarth Damor & Birthday & 12 October \\\
-	Utkarsh Jha & Birthday & 1 November \\\
-	Anirudh Sharma & Birthday & 8 November \\\
-	Ishan Dixit & Birthday & 8 November \\\
-	Khala Aunty & Marriage Anniversary & 14 November \\\
-	Neha Ma'am & Birthday & 15 November \\\
-	Anirudh Sood & Birthday & 19 November \\\
-	Karan Doshi & Birthday & 1 December \\\
-	Abbu & Birthday & 4 December \\\
+	Wish Darshan Kedari a Happy Birthday & 1 February 2022 (Tuesday) & \xmark \\\
+	Wish Faraz a Happy Birthday & 3 February 2022 (Thursday) & \xmark \\\
+	Wish Sharanya Ranka a Happy Birthday & 8 February 2022 (Tuesday) & \xmark \\\
+	Wish Desai Kirti Ma'am a Happy Birthday & 9 February 2022 (Wednesday) & \xmark \\\
+	Wish Anuj Srivastava a Happy Birthday & 2 April 2022 (Saturday) & \xmark \\\
+	Wish Abhinav Damor a Happy Birthday & 4 May 2022 (Wednesday) & \xmark \\\
+	Wish Sarvesh Shinde a Happy Birthday & 6 July 2022 (Wednesday) & \xmark \\\
+	Wish Neha Chemistry Teacher a Happy Teachers day & 5 September 2022 (Monday) & \xmark \\\
+	Wish Desai Kirti Ma'am a Happy Teachers day & 5 September 2022 (Monday) & \xmark \\\
+	Wish Atharv Kirtikar a Happy Birthday & 17 September 2022 (Saturday) & \xmark \\\
+	Wish Siddarth Damor a Happy Birthday & 12 October 2022 (Wednesday) & \xmark \\\
+	Wish Utkarsh Jha a Happy Birthday & 1 November 2021 (Tuesday) & \xmark \\\
+	Wish Anirudh Sharma a Happy Birthday & 8 November 2022 (Tuesday) & \xmark \\\
+	Wish Ishan Dixit a Happy Birthday & 8 November 2022 (Tuesday) & \xmark \\\
+	Wish Khala Aunty a Happy Anniversary & 14 November 2022 (Monday) & \xmark \\\
+	Wish Neha Ma'am a Happy Birthday & 15 November 2022 (Tuesday) & \xmark \\\
+	Wish Anirudh Sood a Happy Birthday & 19 November 2022 (Saturday) & \xmark \\\
+	Wish Karan Doshi a Happy Birthday & 1 December 2022 (Thursday) & \xmark \\\
 \hline
 \end{tabular}
 
@@ -397,6 +386,7 @@ snippet :tt "timetable" i
 \hline
 	Handwriting Recognition App & \xmark \\\
 	Encrypted Backup System & \xmark \\\
+	Repair Password Manager: Check out databases & \xmark \\\
 	Look at Liquid Neural Networkd & \xmark \\\
 	GNN for object tracking using CCTV & \xmark \\\
 	Graph Representation Learning by William Hamilton & \xmark \\\
@@ -409,13 +399,6 @@ snippet :tt "timetable" i
 	Read the paper Gradient Descent is not all you need & \xmark \\\
 	Read Understanding Machine Learning by Shalev-Shwartz & \xmark \\\
 	Write the story about Lord Nedran & \xmark \\\
-	Go through Leandro von Werra article on HuggingFace: Training Code Parrot from scratch & \xmark \\\
-	Maybe look at the paper Self Attention does not need \(O(n^2)\) memory by Rabe and Staats & \xmark \\\
-	Maybe look at deriving convolution from first principles by Michel Bronstein & \xmark \\\
-	Practice Competitive Coding in C++ to keep wits sharp & \xmark \\\
-	Finish reading Good Omens book & \xmark \\\
-	Write a poem & \xmark \\\
-	Go through Sutton and Barto book and other books of relevance & \xmark \\\
 \hline
 \end{tabular}
 
@@ -425,44 +408,25 @@ snippet :tt "timetable" i
 	\textbf{Tasks for Arch Setup} & \textbf{Status} \\\
 \hline
 \hline
-	Set up neomutt & \xmark \\\
-	Set up Newsboat & \xmark \\\
-	Configure Lightdm & \xmark \\\
-	fzf directory ignore & \xmark \\\
+	Set up Picom & \xmark \\\
+	Set up Mutt & \xmark \\\
 \hline
 \end{tabular}
 
 \vspace{2em}
 \begin{tabular}{| r | c |}
 \hline
-	\textbf{Nikumani Sir Project} & \textbf{Status} \\\
-\hline
-	Read the paper about Variational AutoEncoders & \xmark \\\
-	Read and understand the Variational Image Compression with a scale hyperprior & \xmark \\\
-	Understand the GNN from the V2VNet Paper & \xmark \\\
-	Find the 3 remaining channels in the HD binary Map & \xmark \\\
-	Find out how to convert LiDAR to BEV & \xmark \\\
-	Understand Sum-Product Message Passing & \xmark \\\
-	Implement the LiDAR based RL vehicle (using DQN) in Carla & \xmark \\\
-	Find ways to improve the learning rate of RL algorithms & \xmark \\\
-	Convert the whole set up combining DSDNet and V2VNet into a single RL based algorithm & \xmark \\\
-	Implement the RL based algorithm & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c |}
-\hline
-	\textbf{Paresh Sir Project} & \textbf{Status} \\\
+	\textbf{GRE} & \textbf{Status} \\\
 \hline
 \hline
-	Thoroughly read the paper: Neural Adaptive Video Streaming with Pensieve & \xmark \\\
-	Make notes on the paper: Neural Adaptive Video Streaming with Pensieve & \xmark \\\
-	Clarify any doubts you have on the paper: Neural Adaptive Video Streaming with Pensieve & \xmark \\\
-	Go through the code for Pensieve on Github & \xmark \\\
-	Clarify any doubts on the code on Pensieve on Github & \xmark \\\
-	Set up the Pensieve Code from Github on your local machine & \xmark \\\
-	Run it & \xmark \\\
+	Write GRE Paper & \xmark \\\
+	GRE Vocab Practice & \xmark \\\
+	GRE Essay Writing Practice & \xmark \\\
+	GRE Reading Comprehension Practice & \xmark \\\
+	Think of introductory and conclusion paragraphs for essays & \xmark \\\
+	Practice from Dilip Oak Website & \xmark \\\
+	Watch Recorded GRE Lectures & \xmark \\\
+	Transfer Lecture recorded on mom's PC to your own & \xmark \\\
 \hline
 \end{tabular}
 
@@ -472,25 +436,8 @@ snippet :tt "timetable" i
 	\textbf{BITS} & \textbf{Status} \\\
 \hline
 \hline
+	Send Nikumani Sir the updated paper & \xmark \\\
 	Complete the implementation of CARLA & \xmark \\\
-	Work on Paresh Sir Project -- Pensieve & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\noindent \textcolor{red}{\textbf{DEADLINE: 15 JAN 20222}} \\\
-\begin{tabular}{| r | c |}
-\hline
-	\textbf{May-July Research Internship} & \textbf{Status} \\\
-\hline
-\hline
-	Finish Paresh Sir task & \xmark \\\
-	Find out all scholarships from Europe & \xmark \\\
-	Get list of universities and professors & \xmark \\\
-	Complete all relevant Github projects & \xmark \\\
-	Create Github profile and google sites profile & \xmark \\\
-	Create mails to profs & \xmark \\\
-	Send the mails & \xmark \\\
 \hline
 \end{tabular}
 \end{minipage}
@@ -552,42 +499,15 @@ snippet :vs "vertical space 2em" i
 \vspace{2em}$0
 endsnippet
 
-snippet :vsb "vertical space of one line" i
-\vspace{\baselineskip}
-endsnippet
-
-snippet :vocab "vocabulary practice template" i
-\begin{frame}
-	\frametitle{$1}
-	\begin{columns}
-		\column{0.5\textwidth}
-			\pause
-			\textbf{Meaning:} $2 \\\ \pause
-			\textbf{Sample Sentences:} 
-				\begin{itemize}
-					\item $3 \pause
-				\end{itemize}
-			\textbf{Usage:} $4 \\\ \pause
-			\textbf{Connotation:} $5 \\\ \pause
-
-		\column{0.5\textwidth}
-		\begin{figure}
-			\includegraphics[width=$6\textwidth, height=$7\textheight]{$8}
-			\caption{$9}
-		\end{figure}
-	\end{columns}
-\end{frame}$0
-endsnippet
-
-snippet :it "item" i
+snippet it "item" i
 \item $0
 endsnippet
 
-snippet :bf "boldface" i
+snippet bf "boldface" i
 \textbf{$1}$0
 endsnippet
 
-snippet :dcl "document class" i
+snippet dcl "document class" i
 \documentclass{$1}$0
 endsnippet
 
@@ -595,7 +515,7 @@ snippet :au "author" i
 \author{Danish Mohammad}$0
 endsnippet
 
-snippet :ita "italics" i
+snippet ita "italics" i
 \textit{$1}$0
 endsnippet
 
