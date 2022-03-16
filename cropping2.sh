@@ -1,8 +1,7 @@
 #!/bin/sh
 
 file=$1
-temp_file=${file%%.*}-001.${file#*.}
-untouched_file=${file%%.*}-002.${file#*.}
+untouched_file=${file%%.*}-001.${file#*.}
 cp $file $untouched_file
 x_start=0
 y_start=0
@@ -36,16 +35,7 @@ while : ; do
                     x_end=$(( x_end - MOVE )) ;
                 fi
             fi
-            cp $untouched_file $temp_file ;
-            # left edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_start,$y_end" $temp_file ;
-            # right edge
-            convert $temp_file -fill white -stroke red -draw "line $x_end,$y_start $x_end,$y_end" $temp_file ;
-            # top edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_end,$y_start" $temp_file ;
-            # bottom edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_end $x_end,$y_end" $temp_file ;
-            cp $temp_file $file ;;
+            convert $untouched_file -fill transparent -stroke red -draw "polyline $x_start,$y_start $x_start,$y_end $x_end,$y_end $x_end,$y_start $x_start,$y_start" $file ;;
         "j")  # move edge down by 10 pixels
             if (( horz_side == 0 )) ; then  # top edge
                 if (( y_start <= (YMAX - MOVE) && (y_start + MOVE) < y_end )) ; then
@@ -56,16 +46,7 @@ while : ; do
                     y_end=$(( y_end + MOVE )) ;
                 fi
             fi
-            cp $untouched_file $temp_file ;
-            # left edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_start,$y_end" $temp_file ;
-            # right edge
-            convert $temp_file -fill white -stroke red -draw "line $x_end,$y_start $x_end,$y_end" $temp_file ;
-            # top edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_end,$y_start" $temp_file ;
-            # bottom edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_end $x_end,$y_end" $temp_file ;
-            cp $temp_file $file ;;
+            convert $untouched_file -fill transparent -stroke red -draw "polyline $x_start,$y_start $x_start,$y_end $x_end,$y_end $x_end,$y_start $x_start,$y_start" $file ;;
         "l")  # move edge right by 10 pixels
             if (( vert_side == 0 )) ; then  # left edge
                 if (( x_start <= (XMAX - MOVE) && (x_start + MOVE) < x_end )) ; then
@@ -76,16 +57,7 @@ while : ; do
                     x_end=$(( x_end + MOVE )) ;
                 fi
             fi
-            cp $untouched_file $temp_file ;
-            # left edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_start,$y_end" $temp_file ;
-            # right edge
-            convert $temp_file -fill white -stroke red -draw "line $x_end,$y_start $x_end,$y_end" $temp_file ;
-            # top edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_end,$y_start" $temp_file ;
-            # bottom edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_end $x_end,$y_end" $temp_file ;
-            cp $temp_file $file ;;
+            convert $untouched_file -fill transparent -stroke red -draw "polyline $x_start,$y_start $x_start,$y_end $x_end,$y_end $x_end,$y_start $x_start,$y_start" $file ;;
         "k")  # move edge up by 10 pixels
             if (( horz_side == 0 )) ; then  # top edge
                 if (( y_start >= (YMIN + MOVE) )) ; then
@@ -96,19 +68,10 @@ while : ; do
                     y_end=$(( y_end - MOVE )) ;
                 fi
             fi
-            cp $untouched_file $temp_file ;
-            # left edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_start,$y_end" $temp_file ;
-            # right edge
-            convert $temp_file -fill white -stroke red -draw "line $x_end,$y_start $x_end,$y_end" $temp_file ;
-            # top edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_start $x_end,$y_start" $temp_file ;
-            # bottom edge
-            convert $temp_file -fill white -stroke red -draw "line $x_start,$y_end $x_end,$y_end" $temp_file ;
-            cp $temp_file $file ;;
+            convert $untouched_file -fill transparent -stroke red -draw "polyline $x_start,$y_start $x_start,$y_end $x_end,$y_end $x_end,$y_start $x_start,$y_start" $file ;;
         "q")
             convert $untouched_file -crop +$x_start+$y_start -crop -$(( XMAX - x_end ))-$(( YMAX - y_end )) $file ;
             break ;;
     esac
 done
-rm $untouched_file $temp_file
+rm $untouched_file
