@@ -1,4 +1,126 @@
 # ===========================================================
+#                 PYTHON GLOBAL FUNCTIONS
+# ===========================================================
+
+# ----------------------- EXPLANATIONS ----------------------
+# snip.basename: name of the current file without extension and no path
+# snip.buffer
+# snip.c
+# snip.context
+# snip.fn: name of the current file without the path but with the extension
+# snip.ft: the current filetype
+# snip.indent
+# snip.mkline
+# snip.opt(var, default): checks if var has been set. If it has, then it returns its value else it returns default.
+# snip.p
+# snip.reset_indent
+# snip.rv
+# snip.shift
+# snip.snippet_end
+# snip.snippet_start
+# snip.unshift
+# snip.v
+# snip will have more methods if snippet is defined with e option with syntax:
+# snippet trigger_word "description" "expression" options
+global !p
+# define a m x n table
+def table(snip):
+	rows, cols, = snip.buffer[snip.line].split('x')
+
+	int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
+
+	r, c = int_val(rows), int_val(cols)
+
+	offset = c + 1
+	old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
+
+	snip.buffer[snip.line] = ''
+
+	final_str = old_spacing + "\\begin{tabular}{$1}\n\\hline\n"
+
+	for i in range(r):
+		final_str += old_spacing + '\t'
+		final_str += " & ".join(['$' + str(i * c + j + offset + 1) for j in range(c)])
+		final_str += " \\\\\\\n"
+	final_str += old_spacing + "\\hline\n\\end{tabular}\n$0"
+
+	snip.expand_anon(final_str)
+
+def get_date():
+	from datetime import datetime
+	return datetime.today().strftime('%d %B %Y (%A)')
+
+def get_datetime():
+	from datetime import datetime
+	return datetime.today().strftime('%d %B %Y (%A) %H:%M:%S %p %Z')
+
+def get_time():
+	from datetime import datetime
+	return datetime.today().strftime('%H:%M:%S %p %Z')
+
+def work_time():
+	import vim
+	print_path = r'/mnt/windows_d/LibraryOfBabel/Miscellany/Danish/linux_temp/temp'
+	start = 0  # inclusive
+	end = vim.current.window.cursor[0] - 2  # exclusive
+	curr_line = end
+	with open(print_path, 'a') as f:
+		f.write('end = ' + str(end) + ' curr_line = ' + str(curr_line))
+	while curr_line >= 1:
+		with open(print_path, 'a') as f:
+			f.write('current line - 1 nos ' + str(curr_line-1) + vim.current.buffer[curr_line - 1])
+		if r'\hline' in vim.current.buffer[curr_line - 1]:
+			start = curr_line
+			break
+		curr_line -= 1
+	total_time_secs = 0
+	done_time_secs = 0
+	with open(print_path, 'a') as f:
+		f.write('\n\n' + str(start) + ' ' + str(end))
+	for line_n in range(start, end):
+		time_alloted = snip.buffer[line_n].split('&')[1].strip()
+		work_done = True if r'\cmark' in snip.buffer[line_n] else False
+		if ':' not in time_alloted:
+			continue
+		hrs, mins, secs = time_alloted.split(':')
+		increment = int(secs) + int(mins) * 60 + int(hrs) * 3600
+		total_time_secs += increment
+		done_time_secs += increment if work_done else 0
+	time_hrs = total_time_secs // 3600
+	time_mins = total_time_secs // 60 - time_hrs * 60
+	time_secs = total_time_secs - time_mins * 60 - time_hrs * 3600
+	done_hrs = done_time_secs // 3600
+	done_mins = done_time_secs // 60 - done_hrs * 60
+	done_secs = done_time_secs - done_mins * 60 - done_hrs * 3600
+	work_to_do = [str(time_component).zfill(2) for time_component in [time_hrs, time_mins, time_secs]]
+	work_done = [str(time_component).zfill(2) for time_component in [done_hrs, done_mins, done_secs]]
+
+	return ':'.join(work_to_do) + ' & ' + ':'.join(work_done)
+
+endglobal
+
+# ----------- python function using snippets ---------------
+
+pre_expand "table(snip)"
+snippet ":tab(\d+)x(\d+)" "Add table" r
+endsnippet
+
+snippet :dt "today's date" i
+`!p snip.rv = get_date()`
+endsnippet
+
+snippet :tmdt "time and date at given instant" i
+`!p snip.rv = get_datetime()`
+endsnippet
+
+snippet :tm "get time at the given instant" i
+`!p snip.rv = get_time()`
+endsnippet
+
+snippet :aa "set the time needed to do work and time for which work has been done" i
+`!p snip.rv = work_time()`
+endsnippet
+# ===========================================================
 #                 MATH MODE
 # ===========================================================
 
@@ -14,7 +136,47 @@ snippet :fc "fraction" i
 \frac{$1}{$2}$0
 endsnippet
 
-# ------------- font mods ---------------------------------
+snippet :x "times (product)" i
+\times $0
+endsnippet
+
+snippet => "implication" i
+\Rightarrow
+endsnippet
+
+snippet :to "rightarrow math" i
+\rightarrow
+endsnippet
+
+snippet :from "leftarrow math" i
+\leftarrow
+endsnippet
+
+snippet _ "for maths" i
+_{$1}$0
+endsnippet
+
+snippet ^ "exponentiation in math" i
+^{$1}$0
+endsnippet
+
+snippet :sl "sum limits" i
+\sum\limits_{$1}^{$2}$0
+endsnippet
+
+snippet :pd "partial derivative" i
+\frac{\partial $1}{\partial $2}$0
+endsnippet
+
+snippet :ud "superscript and subscript" i
+_{$1}^{$2}$0
+endsnippet
+
+snippet ... "ldots" iA
+\ldots
+endsnippet
+
+# ------------- font modifications ---------------------------------
 snippet :vec "vector notation" i
 \vec{$1}$0
 endsnippet
@@ -35,8 +197,12 @@ snippet :tn "textnormal for math mode" i
 \textnormal{$1}$0
 endsnippet
 
-# ---------------- greek letters --------------------
-snippet :ee "epsilon" i
+snippet :mc "caligraphic math" i
+\mathcal{$1}$0
+endsnippet
+
+# ---------------- Greek letters --------------------
+snippet :ep "epsilon" i
 \epsilon
 endsnippet
 
@@ -56,16 +222,7 @@ snippet :gm "gamma" i
 \gamma
 endsnippet
 
-snippet _ "for maths" i
-_{$1}$0
-endsnippet
-snippet :R "set of real numbers" i
-\mathbb{R}$0
-endsnippet
-
-snippet :sl "sum limits" i
-\sum\limits_{$1}^{$2}$0
-endsnippet
+# ------------- characters ---------------------
 
 snippet :bbP "double line P for probability" i
 \mathbb{P}$0
@@ -79,18 +236,13 @@ snippet :bbR "double line R for set of reals" i
 \mathbb{R}
 endsnippet
 
-snippet \p "partial derivative" i
-\frac{\partial $1}{\partial $2}$0
+snippet :bbN "double line N for set of naturals" i
+\mathbb{N}
 endsnippet
 
-snippet :ud "superscript and subscript" i
-_{$1}^{$2}$0
-endsnippet
-
-snippet ... "ldots" iA
-\ldots
-endsnippet
-
+# ===========================================================
+#              SUPERSCRIPTS AND SUBSCRIPTS
+# ===========================================================
 
 snippet :st "for superscript form of first" i
 \textsuperscript{st}$0
@@ -120,95 +272,9 @@ snippet :sb "subscript in text mode" i
 \textsubscript{$1}$0
 endsnippet
 
-global !p
-
-# Define matrix size in terms of rows/columns
-def mat(snip):
-    rows = snip.buffer[snip.line].split('x')[0]
-    cols = snip.buffer[snip.line].split('x')[1]
-
-    int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
-
-    r = int_val(rows)
-    c = int_val(cols)
-
-    offset = c + 1
-    old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
-
-    snip.buffer[snip.line] = ''
-
-    final_str = old_spacing + "\\begin{matrix}\n"
-
-    for i in range(r):
-        final_str += old_spacing + '\t'
-        final_str += " & ".join(['$' + str(i * c + j + offset) for j in range(c)])
-        final_str += " \\\\\\\n"
-    final_str += old_spacing + "\\end{matrix}\n$0"
-
-    snip.expand_anon(final_str)
-
-# define a m x n table
-def table(snip):
-	rows, cols, = snip.buffer[snip.line].split('x')
-
-	int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
-
-	r, c = int_val(rows), int_val(cols)
-
-	offset = c + 1
-	old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
-
-	snip.buffer[snip.line] = ''
-
-	final_str = old_spacing + "\\begin{tabular}{$1}\n\\hline\n"
-
-	for i in range(r):
-		final_str += old_spacing + '\t'
-		final_str += " & ".join(['$' + str(i * c + j + offset + 1) for j in range(c)])
-		final_str += " \\\\\\\n"
-	final_str += old_spacing + "\\hline\n\\end{tabular}\n$0"
-
-	snip.expand_anon(final_str)
-
-# add a row to a table
-def add_rows(snip):
-	n_cols = snip.buffer[snip.line].count('&')
-
-	left_spacing = len(snip.buffer[snip.line]) - len(snip.buffer[snip.line].lstrip())
-	
-	result_str = left_spacing * ' ' + ' & '.join([' $' + str(i) for i in range(1, n_cols + 1)]) + " \\\\\\\n$0"
-
-	snip.expand_anon(result_str)	
-
-def get_date():
-	from datetime import datetime
-	return datetime.today().strftime('%d %B %Y (%A)')
-
-def get_datetime():
-	from datetime import datetime
-	return datetime.today().strftime('%d %B %Y (%A) %H:%M:%S %p %Z')
-
-def get_time():
-	from datetime import datetime
-	return datetime.today().strftime('%H:%M:%S %p %Z')
-endglobal
-
-
-pre_expand "mat(snip)"
-snippet "fmat(\d+)x(\d+)" "Add matrix" r
-endsnippet
-
-pre_expand "table(snip)"
-snippet ":tab(\d+)x(\d+)" "Add table" r
-endsnippet
-
-pre_expand "add_rows(snip)"
-snippet "row" "Add a row below" i
-endsnippet
-
-snippet => "implication" i
-\Rightarrow
-endsnippet
+# ===========================================================
+#                 TABLE OF CONTENTS CHANGES
+# ===========================================================
 
 snippet :ch "chapter" i
 \chapter{$1}
@@ -226,242 +292,9 @@ snippet :sssec "subsubsection" i
 \subsubsection{$1}$0
 endsnippet
 
-snippet :geo "change geometry of page" i
-% to set custom margins
-\usepackage[left = 1cm, right = 1cm, bottom = 2cm, top = 2cm]{geometry}$0
-endsnippet
-
-snippet :enum "enumeration environment" i
-\begin{enumerate}
-	\item $1
-	\item $2
-	\item $3
-\end{enumerate}$0
-endsnippet
-
-snippet begin "create environment" i
-\begin{$1}
-	$2
-\end{$1}$0
-endsnippet
-
-snippet :x "times (product)" i
-\times $0
-endsnippet
-
-snippet :poem "poem" i
-\newpage
-\begin{center}
-	{\Large \textbf{$1} }
-\end{center}
-\phantomsection
-\addcontentsline{toc}{chapter}{$1}
-\begin{verse}
-	$2
-\end{verse}$0
-endsnippet
-
-snippet :vocab "vocabulary practice template" i
-\begin{frame}
-	\frametitle{$1}
-	\begin{columns}
-		\column{0.5\textwidth}
-			\pause
-			\textbf{Meaning:} $2 \\\ \pause
-			\textbf{Sample Sentences:} 
-				\begin{itemize}
-					\item $3 \pause
-				\end{itemize}
-			\textbf{Usage:} $4 \\\ \pause
-			\textbf{Connotation:} $5 \\\ \pause
-
-		\column{0.5\textwidth}
-		\begin{figure}
-			\includegraphics[width=$6\textwidth, height=$7\textheight]{$8}
-			\caption{$9}
-		\end{figure}
-	\end{columns}
-\end{frame}$0
-endsnippet
-
-snippet :tt "timetable" i
-\begin{minipage}{20cm}% ===================================== $1 =====================================
-\textcolor{Magenta}{\Large{\textbf{$1}}}
-
-\begin{tabular}{| r | c |}
-	\hline
-	\textbf{Everyday Tasks} & \textbf{Status} \\\
-\hline
-\hline
-	Brush in the morning & \xmark \\\
-	Brush at night & \xmark \\\
-	Bathe without taking phone inside & \xmark \\\
-	Bathe using the slinky loofah & \xmark \\\
-	Have a head bath & \xmark \\\
-	Practice Flute (1) & \xmark \\\
-	Practice Flue (2) &  \xmark \\\
-	Practice Flue (3) &  \xmark \\\
-	Exercise &  \xmark \\\
-	Stretch Back, Neck and Leg (1) & \xmark \\\
-	Stretch Back, Neck and Leg (2) &  \xmark \\\
-	Stretch Back, Neck and Leg (3) & \xmark \\\
-	Have Breakfast & \xmark \\\
-	Have Lunch & \xmark \\\
-	Have Dinner & \xmark \\\
-	Go out and talk with friends &  \xmark \\\
-	Get a filled bottle of water & \xmark \\\
-	Finish the bottle of water & \xmark \\\
-	Wash Many bowl & \xmark \\\
-	Replace Mandy Plate & \xmark \\\
-	Clean Mandy Litter & \xmark \\\
-	Play with Mandy & \xmark \\\
-	Take medication (Depranex Half) & \xmark \\\
-	Take medication (ModAlert Full) & \xmark \\\
-	Update Task list at end of day & \xmark \\\
-	Update Money Tracker & \xmark \\\
-	Check you mail through mutt & \xmark \\\
-	\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c |}
-\hline
-	\textbf{Tasks for Today} & \textbf{Status} \\\
-\hline
-\hline
-	Give GRE Test & \xmark \\\
-	Play at night with Nani and Huma and Mom & \xmark \\\
-	Work on Nikumani Sir Project & \xmark \\\
-	Contact Nainika Pai and see what she is up to & \xmark \\\
-	Sync your PC & \xmark \\\
-	Sync Mother's PC & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c | c |}
-\hline
-	\textbf{Tasks for Later} & \textbf{Deadline} & \textbf{Status} \\\
-\hline
-\hline
-	Create a VS Code Extension -- a simple one & 21 November 2021 (Sunday) & \xmark \\\
-	Dev Rev -- VS Code extension creation & 31 March 2022 (Thursday) & \xmark \\\
-	Set up Neutering Appointment for Mandy & 3 December 2021 (Friday) & \xmark \\\
-	Send in Nikumani Sir Project Report & 24 November 2021 (Wednesday) & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c | c |}
-\hline
-	\textbf{Well Wishes} & \textbf{Date} & \textbf{Status} \\\
-\hline
-\hline
-	Wish Darshan Kedari a Happy Birthday & 1 February 2022 (Tuesday) & \xmark \\\
-	Wish Faraz a Happy Birthday & 3 February 2022 (Thursday) & \xmark \\\
-	Wish Sharanya Ranka a Happy Birthday & 8 February 2022 (Tuesday) & \xmark \\\
-	Wish Desai Kirti Ma'am a Happy Birthday & 9 February 2022 (Wednesday) & \xmark \\\
-	Wish Anuj Srivastava a Happy Birthday & 2 April 2022 (Saturday) & \xmark \\\
-	Wish Abhinav Damor a Happy Birthday & 4 May 2022 (Wednesday) & \xmark \\\
-	Wish Sarvesh Shinde a Happy Birthday & 6 July 2022 (Wednesday) & \xmark \\\
-	Wish Neha Chemistry Teacher a Happy Teachers day & 5 September 2022 (Monday) & \xmark \\\
-	Wish Desai Kirti Ma'am a Happy Teachers day & 5 September 2022 (Monday) & \xmark \\\
-	Wish Atharv Kirtikar a Happy Birthday & 17 September 2022 (Saturday) & \xmark \\\
-	Wish Siddarth Damor a Happy Birthday & 12 October 2022 (Wednesday) & \xmark \\\
-	Wish Utkarsh Jha a Happy Birthday & 1 November 2021 (Tuesday) & \xmark \\\
-	Wish Anirudh Sharma a Happy Birthday & 8 November 2022 (Tuesday) & \xmark \\\
-	Wish Ishan Dixit a Happy Birthday & 8 November 2022 (Tuesday) & \xmark \\\
-	Wish Khala Aunty a Happy Anniversary & 14 November 2022 (Monday) & \xmark \\\
-	Wish Neha Ma'am a Happy Birthday & 15 November 2022 (Tuesday) & \xmark \\\
-	Wish Anirudh Sood a Happy Birthday & 19 November 2022 (Saturday) & \xmark \\\
-	Wish Karan Doshi a Happy Birthday & 1 December 2022 (Thursday) & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c |}
-\hline
-	\textbf{Personal Tasks} & \textbf{Status} \\\
-\hline
-\hline
-	Handwriting Recognition App & \xmark \\\
-	Encrypted Backup System & \xmark \\\
-	Repair Password Manager: Check out databases & \xmark \\\
-	Look at Liquid Neural Networkd & \xmark \\\
-	GNN for object tracking using CCTV & \xmark \\\
-	Graph Representation Learning by William Hamilton & \xmark \\\
-	Complete the Sceduler & \xmark \\\
-	Put all your poems - from book and mail - in one location & \xmark \\\
-	Write a story about creating a clone of yourself & \xmark \\\
-	Write a story about being able to edit everything like on a PC & \xmark \\\
-	Think about creating youtube video about DSDNet and V2VNet with 3B1B style & \xmark \\\
-	Add word meanings to Godan by Munshi Premchand & \xmark \\\
-	Read the paper Gradient Descent is not all you need & \xmark \\\
-	Read Understanding Machine Learning by Shalev-Shwartz & \xmark \\\
-	Write the story about Lord Nedran & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c |}
-\hline
-	\textbf{Tasks for Arch Setup} & \textbf{Status} \\\
-\hline
-\hline
-	Set up Picom & \xmark \\\
-	Set up Mutt & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c |}
-\hline
-	\textbf{GRE} & \textbf{Status} \\\
-\hline
-\hline
-	Write GRE Paper & \xmark \\\
-	GRE Vocab Practice & \xmark \\\
-	GRE Essay Writing Practice & \xmark \\\
-	GRE Reading Comprehension Practice & \xmark \\\
-	Think of introductory and conclusion paragraphs for essays & \xmark \\\
-	Practice from Dilip Oak Website & \xmark \\\
-	Watch Recorded GRE Lectures & \xmark \\\
-	Transfer Lecture recorded on mom's PC to your own & \xmark \\\
-\hline
-\end{tabular}
-
-\vspace{2em}
-\begin{tabular}{| r | c |}
-\hline
-	\textbf{BITS} & \textbf{Status} \\\
-\hline
-\hline
-	Send Nikumani Sir the updated paper & \xmark \\\
-	Complete the implementation of CARLA & \xmark \\\
-\hline
-\end{tabular}
-\end{minipage}
-endsnippet
-
-snippet :frm "beamer frames" i
-\begin{frame}
-	\frametitle{$1}
-	$2
-\end{frame}
-$0
-endsnippet
-
-snippet :mc "caligraphic math" i
-\mathcal{$1}$0
-endsnippet
-
-snippet :to "rightarrow math" i
-\rightarrow
-endsnippet
-
-snippet :from "leftarrow math" i
-\leftarrow
-endsnippet
+# ===========================================================
+#                            HEADERS
+# ===========================================================
 
 snippet :up "usepackage without options" i
 \usepackage{$1}$0
@@ -471,43 +304,22 @@ snippet :upo "usepackage with options" i
 \usepackage[$1]{$2}$0
 endsnippet
 
-snippet :v "verbatim" i
-\verb$$1$$0
+snippet :geo "change geometry of page" i
+% to set custom margins
+\usepackage[left = 1cm, right = 1cm, bottom = 2cm, top = 2cm]{geometry}$0
 endsnippet
 
-snippet :dt "today's date" i
-`!p snip.rv = get_date()`
+snippet :xc "xcolor" i
+% to be able to use color in document
+\usepackage[dvipsnames]{xcolor}
 endsnippet
 
-snippet :tmdt "time and date at given instant" i
-`!p snip.rv = get_datetime()`
+snippet :href "hyperref" i
+% to be able to add references and citations and links in the document
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
 endsnippet
 
-snippet :tm "get time at the given instant" i
-`!p snip.rv = get_time()`
-endsnippet
-
-snippet :ig "include graphics" i
-\includegraphics[width=$1\textwidth]{$2}$0
-endsnippet
-
-snippet :ni	"no indent" i
-\noindent $0
-endsnippet
-
-snippet :vs "vertical space 2em" i
-\vspace{2em}$0
-endsnippet
-
-snippet it "item" i
-\item $0
-endsnippet
-
-snippet bf "boldface" i
-\textbf{$1}$0
-endsnippet
-
-snippet dcl "document class" i
+snippet :dcl "document class" i
 \documentclass{$1}$0
 endsnippet
 
@@ -515,8 +327,66 @@ snippet :au "author" i
 \author{Danish Mohammad}$0
 endsnippet
 
-snippet ita "italics" i
+snippet :nosep "no spaces in lists" i
+% to have no space in all lists
+\usepackage{enumitem}
+\setlist[enumerate]{nosep}
+\setlist[itemize]{noitemsep}
+endsnippet
+
+snippet :img "including images in document" i
+% to be able to add images to the document
+\usepackage{graphicx}
+\graphicspath{{/mnt/windows_d/LibraryOfBabel/Images/Miscellaneous/}}
+endsnippet
+
+snippet :rprt "give the basic template for the report" i
+\documentclass{report}
+
+% to be able to add references and citations and links in the document
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
+
+% to set custom margins
+\usepackage[left = 1cm, right = 1cm, bottom = 2cm, top = 2cm]{geometry}
+
+% to be able to use color in document
+\usepackage[dvipsnames]{xcolor}
+
+% to have no space in all lists
+\usepackage{enumitem}
+\setlist[enumerate]{nosep}
+\setlist[itemize]{noitemsep}
+
+\title{$1}
+\author{Danish Mohammad}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+\end{document}
+endsnippet
+# ===========================================================
+#                    TEXT FORMATTING
+# ===========================================================
+
+snippet :bf "boldface" i
+\textbf{$1}$0
+endsnippet
+
+snippet :ita "italics" i
 \textit{$1}$0
+endsnippet
+
+snippet :v "verbatim" i
+\verb$$1$$0
+endsnippet
+
+snippet :ttt "text in monospace like verbatim" i
+\texttt{$1}$0
+endsnippet
+
+snippet :vg "monospace green colour" i
+\textcolor{green}{\texttt{$1}}$0
 endsnippet
 
 # ======================================================
@@ -550,11 +420,302 @@ snippet :tcy "text color yellow" i
 \textcolor{yellow}{$1}$0
 endsnippet
 
+# ===========================================================
+#                         BEAMER
+# ===========================================================
 
+snippet :frm "beamer frames" i
+\begin{frame}
+	\frametitle{$1}
+	$2
+\end{frame}
+$0
+endsnippet
 
+# ===========================================================
+#                         LISTS
+# ===========================================================
 
+snippet :it "item" i
+\item $0
+endsnippet
 
+snippet :enum "enumeration environment" i
+\begin{enumerate}
+	\item $1
+	\item $2
+	\item $3
+\end{enumerate}$0
+endsnippet
 
+# ===========================================================
+#                        SPACING
+# ===========================================================
 
+snippet :ni	"no indent" i
+\noindent $0
+endsnippet
 
+snippet :vs "vertical space 2em" i
+\vspace{2em}$0
+endsnippet
 
+snippet :vsb "vertical space equal to one text line" i
+\vspace{\baselineskip}$0
+endsnippet
+
+snippet :q "horizontal quad spacing" i
+\(\quad\)$0
+endsnippet
+# ===========================================================
+#                    MISCELLANEOUS
+# ===========================================================
+
+snippet :ig "include graphics" i
+\includegraphics[width=$1\textwidth]{$2}$0
+endsnippet
+
+snippet :rig "raisebox include graphics for images in tables" i
+\raisebox{-\totalheight}{\includegraphics[width=$1\textwidth]{$2}}$0
+endsnippet
+
+snippet :begin "create environment" i
+\begin{$1}
+	$2
+\end{$1}$0
+endsnippet
+
+snippet :me "my name" i
+Danish Mohammad
+endsnippet
+# ===========================================================
+#                   SPECIFIC SNIPPETS
+# ===========================================================
+
+snippet :poem "poem" i
+\newpage
+\begin{center}
+	{\Large \textbf{$1} }
+\end{center}
+\phantomsection
+\addcontentsline{toc}{chapter}{$1}
+\begin{verse}
+	$2
+\end{verse}$0
+endsnippet
+
+snippet :tt "timetable" i
+\begin{minipage}{20cm}% ===================================== $1 =====================================
+\textcolor{Magenta}{\Large{\textbf{$1}}}
+
+\begin{tabular}{| r | c | c |}
+	\hline
+	\textbf{Everyday Tasks} & \textbf{Time Needed} & \textbf{Status} \\\
+\hline
+\hline
+	Exercise & 00:15:00 & \xmark \\\
+	Update Exercise Manifest & 00:05:00 & \xmark \\\
+	Brush in the morning & 00:05:00 & \xmark \\\
+	Bathe without taking phone inside & 00:10:00 & \xmark \\\
+	Bathe using the slinky loofah & - & \xmark \\\
+	Have a head bath & - & \xmark \\\
+	Put clothes for washing & 00:01:00 & \xmark \\\
+	Breakfast & 01:00:00 & \xmark \\\
+	Take medication (Depranex Half) & 00:01:00 & \xmark \\\
+	Take medication (ModAlert Half) & 00:01:00 & \xmark \\\
+	Create Task List for the day & 00:15:00 & \xmark \\\
+	Lunch & 01:00:00 & \xmark \\\
+	Dinner & 01:00:00 & \xmark \\\
+	Brush at night & 00:05:00 & \xmark \\\
+	Go out and talk with friends & 01:30:00 &  \xmark \\\
+	Wash Many bowl & 00:05:00 & \xmark \\\
+	Replace Mandy Plate & 00:05:00 & \xmark \\\
+	Clean Mandy Litter & 00:05:00 & \xmark \\\
+	Play with Mandy & 00:15:00 & \xmark \\\
+	Update Task list at end of day & 00:10:00 & \xmark \\\
+	Update Money Tracker & 00:10:00 & \xmark \\\
+	Check you mail (try to do it through mutt) & 00:05:00 & \xmark \\\
+\hline
+	\textbf{Total Time} & 06:34:00 & \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c | c |}
+\hline
+	\textbf{Tasks for Today} & \textbf{Expected Time} & \textbf{Status} \\\
+\hline
+\hline
+	Work on Nikumani Sir Project & 02:00:00 & \xmark \\\
+	Work on Paresh Sir Project & 04:00:00 & \xmark \\\
+	Work on VSCode Extension & 02:00:00 & \xmark \\\
+	Codeforces/ Kaggle & 01:00:00 & \xmark \\\
+	\textbf{Total Time} & \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | r | c |}
+\hline
+	\textbf{Tasks for Later} & \textbf{Deadline} & \textbf{Status} \\\
+\hline
+\hline
+	Create a VS Code Extension -- a simple one & 15 January 2022 (Sunday) & \xmark \\\
+	Call Dadi, Phupi, Mamujan, Didi, Khala Aunty & 23 January 2022 (Sunday) & \xmark \\\
+	Dev Rev -- VS Code extension creation & 31 March 2022 (Thursday) & \xmark \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c | c |}
+\hline
+	\textbf{Person} & \textbf{Event} & \textbf{Date} \\\
+\hline
+\hline
+	Badi Ammi & Marriage Anniversary & 8 January \\\
+	Khala Aunty & Birthday & 26 January \\\
+	Zeba & Birthday & 29 January \\\
+	Darshan Kedari & Birthday & 1 February \\\
+	Faraz & Birthday & 3 February \\\
+	Aditya Singhal & Birthday & 4 February \\\
+	Sharanya Ranka & Birthday & 8 February \\\
+	Desai Kirti Ma'am & Birthday & 9 February \\\
+	Mehul Jain & Birthday & 21 February \\\
+	Ruksar Sindgi & Birthday & 01 April \\\
+	Anuj Srivastava & Birthday & 2 April \\\
+	Abbu Mummy & Marriage Anniversary & 07 April \\\
+	Huma Naaz Mohammad & Birthday & 09 April \\\
+	Mummy & Birthday & 10 April \\\
+	Abhinav Damor & Birthday & 4 May \\\
+	Badi Ammi & Birthday & 26 May \\\
+	Sarvesh Shinde & Birthday & 6 July \\\
+	Neha Chemistry Teacher & Teachers day & 5 September \\\
+	Desai Kirti Ma'am & Teachers day & 5 September \\\
+	Atharv Kirtikar & Birthday & 17 September \\\
+	Siddarth Damor & Birthday & 12 October \\\
+	Utkarsh Jha & Birthday & 1 November \\\
+	Anirudh Sharma & Birthday & 8 November \\\
+	Ishan Dixit & Birthday & 8 November \\\
+	Khala Aunty & Marriage Anniversary & 14 November \\\
+	Neha Ma'am & Birthday & 15 November \\\
+	Anirudh Sood & Birthday & 19 November \\\
+	Karan Doshi & Birthday & 1 December \\\
+	Abbu & Birthday & 4 December \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c |}
+\hline
+	\textbf{Personal Tasks} & \textbf{Status} \\\
+\hline
+\hline
+	Handwriting Recognition App & \xmark \\\
+	Encrypted Backup System & \xmark \\\
+	Look at Liquid Neural Networkd & \xmark \\\
+	GNN for object tracking using CCTV & \xmark \\\
+	Graph Representation Learning by William Hamilton & \xmark \\\
+	Complete the Sceduler & \xmark \\\
+	Put all your poems - from book and mail - in one location & \xmark \\\
+	Write a story about creating a clone of yourself & \xmark \\\
+	Write a story about being able to edit everything like on a PC & \xmark \\\
+	Think about creating youtube video about DSDNet and V2VNet with 3B1B style & \xmark \\\
+	Add word meanings to Godan by Munshi Premchand & \xmark \\\
+	Read the paper Gradient Descent is not all you need & \xmark \\\
+	Read Understanding Machine Learning by Shalev-Shwartz & \xmark \\\
+	Write the story about Lord Nedran & \xmark \\\
+	Go through Leandro von Werra article on HuggingFace: Training Code Parrot from scratch & \xmark \\\
+	Maybe look at the paper Self Attention does not need \(O(n^2)\) memory by Rabe and Staats & \xmark \\\
+	Maybe look at deriving convolution from first principles by Michel Bronstein & \xmark \\\
+	Practice Competitive Coding in C++ to keep wits sharp & \xmark \\\
+	Practice Kaggle Competitions to increase your understanding of ML & \xmark \\\
+	Finish reading Good Omens book & \xmark \\\
+	Write a poem & \xmark \\\
+	Go through Sutton and Barto book and other books of relevance & \xmark \\\
+	Complete the Mathematical representation of Origami (2D and 3D) & \xmark \\\
+	NPTEL Deep Learning Course from IIT Madras & \xmark \\\
+	Neural Differential Thesis -- read it & \xmark \\\
+	Read generalised advantage estimation paper & \xmark \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c |}
+\hline
+	\textbf{Tasks for Arch Setup} & \textbf{Status} \\\
+\hline
+\hline
+	Set up neomutt & \xmark \\\
+	Set up Newsboat & \xmark \\\
+	Configure Lightdm & \xmark \\\
+	add keybindings to ncmpcpp & \xmark \\\
+	Create script for brightness control & \xmark \\\
+	Add taskbar entry for brightness & \xmark \\\
+	Change Powerline prompt color & \xmark \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c |}
+\hline
+	\textbf{Nikumani Sir Project} & \textbf{Status} \\\
+\hline
+	Read the paper about Variational AutoEncoders & \xmark \\\
+	Read and understand the Variational Image Compression with a scale hyperprior & \xmark \\\
+	Understand the GNN from the V2VNet Paper & \xmark \\\
+	Find the 3 remaining channels in the HD binary Map & \xmark \\\
+	Find out how to convert LiDAR to BEV & \xmark \\\
+	Understand Sum-Product Message Passing & \xmark \\\
+	Implement the LiDAR based RL vehicle (using DQN) in Carla & \xmark \\\
+	Find ways to improve the learning rate of RL algorithms & \xmark \\\
+	Convert the whole set up combining DSDNet and V2VNet into a single RL based algorithm & \xmark \\\
+	Implement the RL based algorithm & \xmark \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c |}
+\hline
+	\textbf{Paresh Sir Project} & \textbf{Status} \\\
+\hline
+\hline
+	Reduce the batch size and run the pensieve-py28 code on gpu & \xmark \\\
+	\textcolor{red}{Thoroughly read through the Soft Actor Critic Pensieve paper} & \xmark \\\
+	Implement AR-A3C for the papers use case of pendulum & \xmark \\\
+	Understand the theoretical optimal model from the pensieve paper & \xmark \\\
+	Look at how optimal performance was exceeded in SAC-ABR & \xmark \\\
+	See if you can train faster by doing supervised learning on MPC & \xmark \\\
+	Implement A3C and AR-A3C on pendulum environment from gym & \xmark \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\begin{tabular}{| r | c |}
+\hline
+	\textbf{BITS} & \textbf{Status} \\\
+\hline
+\hline
+	Complete the implementation of CARLA & \xmark \\\
+	Work on Paresh Sir Project -- Pensieve & \xmark \\\
+\hline
+\end{tabular}
+
+\vspace{2em}
+\noindent \textcolor{red}{\textbf{DEADLINE: 15 JAN 20222}} \\\
+\begin{tabular}{| r | c |}
+\hline
+	\textbf{May-July Research Internship} & \textbf{Status} \\\
+\hline
+\hline
+	Finish Paresh Sir task & \xmark \\\
+	Find out all scholarships from Europe & \xmark \\\
+	Get list of universities and professors & \xmark \\\
+	Complete all relevant Github projects & \xmark \\\
+	Create Github profile and google sites profile & \xmark \\\
+	Create mails to profs & \xmark \\\
+	Send the mails & \xmark \\\
+	Give Nikumani Sir paper to Apogee & \xmark \\\
+\hline
+\end{tabular}
+\end{minipage}
+endsnippet
